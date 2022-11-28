@@ -4,7 +4,6 @@ from ascii_game_api.game import Game
 
 
 # TODO: test
-# TODO: implement game screen and hud support
 
 
 class GameView(Renderable):

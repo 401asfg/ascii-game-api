@@ -3,9 +3,6 @@ from ascii_game_api.game_object import GameObject
 from ascii_game_api.room import Room
 
 
-# TODO: test
-
-
 class World(Game):
     """
     A world that can spawn game objects within its current room
