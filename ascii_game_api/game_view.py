@@ -67,9 +67,9 @@ class GameView(Renderable):
             return left <= x < right and top <= y < bottom
 
         def draw(game_object):
-            self._game_screen.draw_sprite(game_object.sprite,
-                                          game_object.x,
-                                          game_object.y)
+            self._game_screen.draw(game_object.sprite,
+                                   game_object.x,
+                                   game_object.y)
 
         [draw(game_object)
          for game_object in self.game

@@ -1,8 +1,10 @@
+from abc import ABC, abstractmethod
+
 from ascii_loader import Entity
 from ascii_renderer import Sprite
 
 
-class GameObject(Entity):
+class GameObject(Entity, ABC):
     """
     An object that can be added to a game
     """
@@ -24,12 +26,14 @@ class GameObject(Entity):
     def sprite(self) -> Sprite:
         return self._sprite
 
+    @abstractmethod
     def on_spawn(self):
         """
         Performs the game object's spawn event; 
         This method should only ever be called by a game's spawn method
         """
 
+    @abstractmethod
     def on_despawn(self):
         """
         Performs the game object's despawn event

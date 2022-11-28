@@ -3,9 +3,6 @@ from ascii_game_api.game import Game, DuplicateGameObjectError
 from ascii_game_api.game_object import GameObject
 
 
-# TODO: test
-
-
 class Room(Game):
     """
     A room that can have game objects spawned within it
