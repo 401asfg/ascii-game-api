@@ -2,7 +2,7 @@ import unittest
 
 from ascii_renderer import Sprite
 
-from ascii_game_api import Room, GameObject, DuplicateGameObjectError
+from ascii_game_api import Room, GameObject, DuplicateGameObjectError, World
 
 
 class GOA(GameObject):
@@ -63,6 +63,9 @@ class TestRoom(unittest.TestCase):
     empty_room: Room
     populated_room: Room
 
+    empty_world: World
+    populated_world: World
+
     def setUp(self) -> None:
         self.sprite_a = Sprite('a')
         self.sprite_b = Sprite('b')
@@ -77,19 +80,25 @@ class TestRoom(unittest.TestCase):
         self.populated_room = Room((self.goa, self.gob, self.goc))
         self.empty_room = Room()
 
+        self.populated_world = World(self.populated_room)
+        self.empty_world = World(self.empty_room)
+
     def test_init(self):
-        self.assertEqual(3, self.populated_room.num_game_objects())
-        self.assertTrue(self.goa in self.populated_room)
-        self.assertTrue(self.gob in self.populated_room)
-        self.assertTrue(self.goc in self.populated_room)
+        self.assertEqual(3, self.populated_world.num_game_objects())
+        self.assertTrue(self.goa in self.populated_world)
+        self.assertTrue(self.gob in self.populated_world)
+        self.assertTrue(self.goc in self.populated_world)
 
-        self.assertFalse(self.god in self.populated_room)
+        self.assertFalse(self.god in self.populated_world)
 
-        self.assertEqual(0, self.empty_room.num_game_objects())
-        self.assertFalse(self.goa in self.empty_room)
-        self.assertFalse(self.gob in self.empty_room)
-        self.assertFalse(self.goc in self.empty_room)
-        self.assertFalse(self.god in self.empty_room)
+        self.assertEqual(0, self.empty_world.num_game_objects())
+        self.assertFalse(self.goa in self.empty_world)
+        self.assertFalse(self.gob in self.empty_world)
+        self.assertFalse(self.goc in self.empty_world)
+        self.assertFalse(self.god in self.empty_world)
+
+        self.assertEqual(self.empty_room, self.empty_world.room)
+        self.assertEqual(self.populated_room, self.populated_world.room)
 
     def test_spawn(self):
         def assert_spawn(game_object: GameObject,
@@ -98,12 +107,12 @@ class TestRoom(unittest.TestCase):
                          contains_b: bool,
                          contains_c: bool,
                          contains_d: bool):
-            self.empty_room.spawn(game_object)
-            self.assertEqual(num_entities, self.empty_room.num_game_objects())
-            self.assertEqual(contains_a, self.goa in self.empty_room)
-            self.assertEqual(contains_b, self.gob in self.empty_room)
-            self.assertEqual(contains_c, self.goc in self.empty_room)
-            self.assertEqual(contains_d, self.god in self.empty_room)
+            self.empty_world.spawn(game_object)
+            self.assertEqual(num_entities, self.empty_world.num_game_objects())
+            self.assertEqual(contains_a, self.goa in self.empty_world)
+            self.assertEqual(contains_b, self.gob in self.empty_world)
+            self.assertEqual(contains_c, self.goc in self.empty_world)
+            self.assertEqual(contains_d, self.god in self.empty_world)
 
         def assert_fail(game_object: GameObject,
                         num_entities: int,
@@ -112,14 +121,14 @@ class TestRoom(unittest.TestCase):
                         contains_c: bool,
                         contains_d: bool):
             try:
-                self.empty_room.spawn(game_object)
+                self.empty_world.spawn(game_object)
                 self.fail()
             except DuplicateGameObjectError:
-                self.assertEqual(num_entities, self.empty_room.num_game_objects())
-                self.assertEqual(contains_a, self.goa in self.empty_room)
-                self.assertEqual(contains_b, self.gob in self.empty_room)
-                self.assertEqual(contains_c, self.goc in self.empty_room)
-                self.assertEqual(contains_d, self.god in self.empty_room)
+                self.assertEqual(num_entities, self.empty_world.num_game_objects())
+                self.assertEqual(contains_a, self.goa in self.empty_world)
+                self.assertEqual(contains_b, self.gob in self.empty_world)
+                self.assertEqual(contains_c, self.goc in self.empty_world)
+                self.assertEqual(contains_d, self.god in self.empty_world)
 
         assert_spawn(self.goa,
                      1,
@@ -226,12 +235,12 @@ class TestRoom(unittest.TestCase):
                            contains_b: bool,
                            contains_c: bool,
                            contains_d: bool):
-            self.empty_room.despawn(game_object)
-            self.assertEqual(num_entities, self.empty_room.num_game_objects())
-            self.assertEqual(contains_a, self.goa in self.empty_room)
-            self.assertEqual(contains_b, self.gob in self.empty_room)
-            self.assertEqual(contains_c, self.goc in self.empty_room)
-            self.assertEqual(contains_d, self.god in self.empty_room)
+            self.empty_world.despawn(game_object)
+            self.assertEqual(num_entities, self.empty_world.num_game_objects())
+            self.assertEqual(contains_a, self.goa in self.empty_world)
+            self.assertEqual(contains_b, self.gob in self.empty_world)
+            self.assertEqual(contains_c, self.goc in self.empty_world)
+            self.assertEqual(contains_d, self.god in self.empty_world)
 
         def assert_fail(game_object: GameObject,
                         num_entities: int,
@@ -240,14 +249,14 @@ class TestRoom(unittest.TestCase):
                         contains_c: bool,
                         contains_d: bool):
             try:
-                self.empty_room.despawn(game_object)
+                self.empty_world.despawn(game_object)
                 self.fail()
             except ValueError:
-                self.assertEqual(num_entities, self.empty_room.num_game_objects())
-                self.assertEqual(contains_a, self.goa in self.empty_room)
-                self.assertEqual(contains_b, self.gob in self.empty_room)
-                self.assertEqual(contains_c, self.goc in self.empty_room)
-                self.assertEqual(contains_d, self.god in self.empty_room)
+                self.assertEqual(num_entities, self.empty_world.num_game_objects())
+                self.assertEqual(contains_a, self.goa in self.empty_world)
+                self.assertEqual(contains_b, self.gob in self.empty_world)
+                self.assertEqual(contains_c, self.goc in self.empty_world)
+                self.assertEqual(contains_d, self.god in self.empty_world)
 
         assert_fail(self.goa,
                     0,
@@ -256,7 +265,7 @@ class TestRoom(unittest.TestCase):
                     False,
                     False)
 
-        self.empty_room.spawn(self.goa)
+        self.empty_world.spawn(self.goa)
         assert_despawn(self.goa,
                        0,
                        False,
@@ -271,8 +280,8 @@ class TestRoom(unittest.TestCase):
                     False,
                     False)
 
-        self.empty_room.spawn(self.gob)
-        self.empty_room.spawn(self.goc)
+        self.empty_world.spawn(self.gob)
+        self.empty_world.spawn(self.goc)
         assert_despawn(self.gob,
                        1,
                        False,
@@ -294,9 +303,9 @@ class TestRoom(unittest.TestCase):
                     True,
                     False)
 
-        self.empty_room.spawn(self.goa)
-        self.empty_room.spawn(self.gob)
-        self.empty_room.spawn(self.god)
+        self.empty_world.spawn(self.goa)
+        self.empty_world.spawn(self.gob)
+        self.empty_world.spawn(self.god)
         assert_despawn(self.goa,
                        3,
                        False,
@@ -397,12 +406,12 @@ class TestRoom(unittest.TestCase):
 
     def test_get(self):
         def assert_get(expected_entity: GameObject, index: int):
-            self.assertEqual(expected_entity.__dict__, self.empty_room.get_game_object(index).__dict__)
+            self.assertEqual(expected_entity.__dict__, self.empty_world.get_game_object(index).__dict__)
 
         def assert_fail(lowest_fail_index: int):
             def fail(index):
                 try:
-                    self.empty_room.get_game_object(index)
+                    self.empty_world.get_game_object(index)
                     self.fail()
                 except IndexError:
                     pass
@@ -426,72 +435,115 @@ class TestRoom(unittest.TestCase):
 
         assert_fail(0)
 
-        self.empty_room.spawn(self.gob)
+        self.empty_world.spawn(self.gob)
         assert_get(self.gob, 0)
         assert_fail(1)
 
-        self.empty_room.despawn(self.gob)
+        self.empty_world.despawn(self.gob)
         assert_fail(0)
 
-        self.empty_room.spawn(self.goc)
-        self.empty_room.spawn(self.god)
+        self.empty_world.spawn(self.goc)
+        self.empty_world.spawn(self.god)
         assert_get(self.god, 1)
         assert_get(self.goc, 0)
         assert_fail(2)
 
-        self.empty_room.despawn(self.goc)
+        self.empty_world.despawn(self.goc)
         assert_get(self.god, 0)
         assert_fail(1)
 
-        self.empty_room.spawn(self.goa)
-        self.empty_room.spawn(self.gob)
-        self.empty_room.spawn(self.goc)
+        self.empty_world.spawn(self.goa)
+        self.empty_world.spawn(self.gob)
+        self.empty_world.spawn(self.goc)
         assert_get(self.god, 0)
         assert_get(self.goa, 1)
         assert_get(self.gob, 2)
         assert_get(self.goc, 3)
         assert_fail(4)
 
-        self.empty_room.despawn(self.gob)
+        self.empty_world.despawn(self.gob)
         assert_get(self.god, 0)
         assert_get(self.goa, 1)
         assert_get(self.goc, 2)
         assert_fail(3)
 
-        self.empty_room.despawn(self.god)
+        self.empty_world.despawn(self.god)
         assert_get(self.goa, 0)
         assert_get(self.goc, 1)
         assert_fail(2)
 
-        self.empty_room.despawn(self.goa)
+        self.empty_world.despawn(self.goa)
         assert_get(self.goc, 0)
         assert_fail(1)
 
-        self.empty_room.spawn(self.goa)
+        self.empty_world.spawn(self.goa)
         assert_get(self.goa, 1)
         assert_get(self.goc, 0)
         assert_fail(2)
 
-        self.empty_room.despawn(self.goc)
+        self.empty_world.despawn(self.goc)
         assert_get(self.goa, 0)
         assert_fail(1)
 
-        self.empty_room.despawn(self.goa)
+        self.empty_world.despawn(self.goa)
         assert_fail(0)
 
     def test_iteration(self):
-        for _ in self.empty_room:
+        for _ in self.empty_world:
             self.fail()
 
         game_objects = []
 
-        for game_object in self.populated_room:
+        for game_object in self.populated_world:
             game_objects.append(game_object)
 
         self.assertEqual(3, len(game_objects))
         self.assertEqual(self.goa, game_objects[0])
         self.assertEqual(self.gob, game_objects[1])
         self.assertEqual(self.goc, game_objects[2])
+
+    def test_goto_room(self):
+        self.empty_world.goto_room(self.populated_room)
+        self.assertEqual(3, self.empty_world.num_game_objects())
+        self.assertTrue(self.goa in self.empty_world)
+        self.assertTrue(self.gob in self.empty_world)
+        self.assertTrue(self.goc in self.empty_world)
+        self.assertFalse(self.god in self.empty_world)
+
+        self.empty_world.goto_room(self.populated_room)
+        self.assertEqual(3, self.empty_world.num_game_objects())
+        self.assertTrue(self.goa in self.empty_world)
+        self.assertTrue(self.gob in self.empty_world)
+        self.assertTrue(self.goc in self.empty_world)
+        self.assertFalse(self.god in self.empty_world)
+
+        self.empty_world.spawn(self.god)
+
+        self.empty_world.goto_room(self.empty_room)
+        self.assertFalse(0, self.empty_world.num_game_objects())
+        self.assertFalse(self.goa in self.empty_world)
+        self.assertFalse(self.gob in self.empty_world)
+        self.assertFalse(self.goc in self.empty_world)
+        self.assertFalse(self.god in self.empty_world)
+
+        gox = GOA(Sprite('x'), 88, 2)
+        self.empty_world.spawn(gox)
+
+        self.empty_world.goto_room(self.populated_room)
+        self.assertEqual(4, self.empty_world.num_game_objects())
+        self.assertTrue(self.goa in self.empty_world)
+        self.assertTrue(self.gob in self.empty_world)
+        self.assertTrue(self.goc in self.empty_world)
+        self.assertTrue(self.god in self.empty_world)
+        self.assertFalse(gox in self.empty_world)
+
+        self.empty_world.goto_room(self.empty_room)
+        self.assertEqual(1, self.empty_world.num_game_objects())
+        self.assertFalse(self.goa in self.empty_world)
+        self.assertFalse(self.gob in self.empty_world)
+        self.assertFalse(self.goc in self.empty_world)
+        self.assertFalse(self.god in self.empty_world)
+        self.assertTrue(gox in self.empty_world)
 
 
 if __name__ == '__main__':
