@@ -4,6 +4,9 @@ from ascii_loader import Entity
 from ascii_renderer import Sprite
 
 
+# TODO: add depth property?
+
+
 class GameObject(Entity, ABC):
     """
     An object that can be added to a game
@@ -16,8 +19,8 @@ class GameObject(Entity, ABC):
         Initializes the class
 
         :param sprite: The game object's sprite
-        :param x: The game object's x position in a map
-        :param y: The game object's y position in a map 
+        :param x: The game object's x position in a game
+        :param y: The game object's y position in a game
         """
         super().__init__(x, y)
         self._sprite = sprite

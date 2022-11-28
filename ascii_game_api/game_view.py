@@ -3,12 +3,13 @@ from ascii_renderer import Renderable, Screen
 from ascii_game_api.game import Game
 
 
+# TODO: account for game objects' depth property
 # TODO: test
 
 
 class GameView(Renderable):
     """
-    A view of a game through a screen
+    A renderable view of a game through a screen
     """
 
     _game: Game
