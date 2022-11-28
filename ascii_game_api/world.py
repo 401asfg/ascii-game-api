@@ -1,5 +1,5 @@
 from ascii_game_api.game import Game
-from ascii_game_api.game_object import GameObject
+from ascii_game_api.gameobject import GameObject
 from ascii_game_api.room import Room
 
 
@@ -21,20 +21,20 @@ class World(Game):
         """
         self._room = starting_room
 
-    def spawn(self, game_object: GameObject):
-        self.room.spawn(game_object)
+    def spawn(self, gameobject: GameObject):
+        self.room.spawn(gameobject)
 
-    def despawn(self, game_object: GameObject):
-        self.room.despawn(game_object)
+    def despawn(self, gameobject: GameObject):
+        self.room.despawn(gameobject)
 
-    def get_game_object(self, index: int) -> GameObject:
-        return self.room.get_game_object(index)
+    def get_gameobject(self, index: int) -> GameObject:
+        return self.room.get_gameobject(index)
 
-    def num_game_objects(self) -> int:
-        return self.room.num_game_objects()
+    def num_gameobjects(self) -> int:
+        return self.room.num_gameobjects()
 
-    def __contains__(self, game_object: GameObject) -> bool:
-        return game_object in self.room
+    def __contains__(self, gameobject: GameObject) -> bool:
+        return gameobject in self.room
 
     def __iter__(self):
         return iter(self.room)

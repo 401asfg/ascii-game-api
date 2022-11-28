@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from ascii_game_api.game_object import GameObject
+from ascii_game_api.gameobject import GameObject
 
 
 # TODO: make abs methods not raise not impl err, and just have nothing?
@@ -20,46 +20,46 @@ class Game(ABC):
     """
 
     @abstractmethod
-    def spawn(self, game_object: GameObject):
+    def spawn(self, gameobject: GameObject):
         """
-        Spawns the given game_object in the game; Triggers the given game_object's on_spawn event
+        Spawns the given gameobject in the game; Triggers the given game_object's on_spawn event
 
-        :param game_object: The game object to spawn
-        :raise DuplicateGameObjectError: If the given game_object instance is already in the game
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def despawn(self, game_object: GameObject):
-        """
-        Despawns the given game_object in the game; Triggers the given game_object's on_despawn event
-
-        :param game_object: The game object to despawn
-        :raise ValueError: If the given game_object instance is not in the game
+        :param gameobject: The game object to spawn
+        :raise DuplicateGameObjectError: If the given gameobject instance is already in the game
         """
         raise NotImplementedError
 
     @abstractmethod
-    def get_game_object(self, index: int) -> GameObject:
+    def despawn(self, gameobject: GameObject):
+        """
+        Despawns the given gameobject in the game; Triggers the given game_object's on_despawn event
+
+        :param gameobject: The game object to despawn
+        :raise ValueError: If the given gameobject instance is not in the game
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_gameobject(self, index: int) -> GameObject:
         """
         :param index: The index of the game object to get
         :return: The game object at the given index in the game
 
-        :raise IndexError: If the given index is less than 0, or greater than or equal to num_game_objects()
+        :raise IndexError: If the given index is less than 0, or greater than or equal to num_gameobjects()
         """
         raise NotImplementedError
 
     @abstractmethod
-    def num_game_objects(self) -> int:
+    def num_gameobjects(self) -> int:
         """
         :return: The number of game objects in the game
         """
         raise NotImplementedError
 
     @abstractmethod
-    def __contains__(self, game_object: GameObject) -> bool:
+    def __contains__(self, gameobject: GameObject) -> bool:
         """
-        :param game_object: The game object to check the game for
+        :param gameobject: The game object to check the game for
         :return: True if the given game object is in the game; otherwise, False
         """
         raise NotImplementedError

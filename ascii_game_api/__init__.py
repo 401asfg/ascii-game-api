@@ -1,8 +1,8 @@
-from ascii_game_api.game_object import GameObject
+from ascii_game_api.gameobject import GameObject
 from ascii_game_api.game import Game, DuplicateGameObjectError
 from ascii_game_api.room import Room
 from ascii_game_api.world import World
-from ascii_game_api.game_view import GameView
+from ascii_game_api.gameview import GameView
 
 from ascii_renderer.renderable import Renderable
 from ascii_renderer.sprite import Sprite

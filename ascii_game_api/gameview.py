@@ -55,9 +55,9 @@ class GameView(Renderable):
         """
         self._game_screen.clear()
 
-        def in_view(game_object):
-            x = game_object.x
-            y = game_object.y
+        def in_view(gameobject):
+            x = gameobject.x
+            y = gameobject.y
 
             left = self.x
             top = self.y
@@ -66,14 +66,14 @@ class GameView(Renderable):
 
             return left <= x < right and top <= y < bottom
 
-        def draw(game_object):
-            self._game_screen.draw(game_object.sprite,
-                                   game_object.x,
-                                   game_object.y)
+        def draw(gameobject):
+            self._game_screen.draw(gameobject.sprite,
+                                   gameobject.x,
+                                   gameobject.y)
 
-        [draw(game_object)
-         for game_object in self.game
-         if in_view(game_object)]
+        [draw(gameobject)
+         for gameobject in self.game
+         if in_view(gameobject)]
 
     @property
     def game(self) -> Game:

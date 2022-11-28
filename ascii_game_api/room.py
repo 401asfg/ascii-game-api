@@ -1,6 +1,6 @@
 from typing import List, Tuple
 from ascii_game_api.game import Game, DuplicateGameObjectError
-from ascii_game_api.game_object import GameObject
+from ascii_game_api.gameobject import GameObject
 
 
 class Room(Game):
@@ -8,46 +8,46 @@ class Room(Game):
     A room that can have game objects spawned within it
     """
 
-    _game_objects: List[GameObject]
+    _gameobjects: List[GameObject]
 
-    def __init__(self, game_objects: Tuple[GameObject, ...] = ()):
+    def __init__(self, gameobjects: Tuple[GameObject, ...] = ()):
         """
         Initializes the class
         
-        :param game_objects: A set of game objects that are spawned into the room 
+        :param gameobjects: A set of game objects that are spawned into the room
         upon its creation
         """
-        self._game_objects = []
-        [self.spawn(game_object) for game_object in game_objects]
+        self._gameobjects = []
+        [self.spawn(gameobject) for gameobject in gameobjects]
 
-    def spawn(self, game_object: GameObject):
-        if game_object in self:
+    def spawn(self, gameobject: GameObject):
+        if gameobject in self:
             raise DuplicateGameObjectError
 
-        self._game_objects.append(game_object)
-        game_object.on_spawn()
+        self._gameobjects.append(gameobject)
+        gameobject.on_spawn()
 
-    def despawn(self, game_object: GameObject):
-        self._game_objects.remove(game_object)
-        game_object.on_despawn()
+    def despawn(self, gameobject: GameObject):
+        self._gameobjects.remove(gameobject)
+        gameobject.on_despawn()
 
-    def get_game_object(self, index: int) -> GameObject:
-        return self._game_objects[index]
+    def get_gameobject(self, index: int) -> GameObject:
+        return self._gameobjects[index]
 
-    def num_game_objects(self) -> int:
-        return len(self._game_objects)
+    def num_gameobjects(self) -> int:
+        return len(self._gameobjects)
 
-    def __contains__(self, game_object: GameObject) -> bool:
-        return game_object in self._game_objects
+    def __contains__(self, gameobject: GameObject) -> bool:
+        return gameobject in self._gameobjects
 
     def __iter__(self):
         self._index = 0
         return self
     
     def __next__(self) -> GameObject:
-        if self._index >= self.num_game_objects():
+        if self._index >= self.num_gameobjects():
             raise StopIteration
 
-        game_object = self.get_game_object(self._index)
+        gameobject = self.get_gameobject(self._index)
         self._index += 1
-        return game_object
+        return gameobject
