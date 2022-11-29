@@ -39,6 +39,6 @@ class GameObject(Entity, ABC):
     @abstractmethod
     def on_despawn(self):
         """
-        Performs the game object's despawn event
+        Performs the game object's despawn event;
         This method should only ever be called by a game's despawn method
         """
