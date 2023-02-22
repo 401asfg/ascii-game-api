@@ -91,6 +91,12 @@ class TestRoom(unittest.TestCase):
         self.assertFalse(self.goc in self.empty_room)
         self.assertFalse(self.god in self.empty_room)
 
+        try:
+            Room((self.goa, self.gob, self.goc, self.goa))
+            self.fail()
+        except DuplicateGameObjectError:
+            pass
+
     def test_spawn(self):
         def assert_spawn(gameobject: GameObject,
                          num_entities: int,
@@ -478,20 +484,6 @@ class TestRoom(unittest.TestCase):
 
         self.empty_room.despawn(self.goa)
         assert_fail(0)
-
-    def test_iteration(self):
-        for _ in self.empty_room:
-            self.fail()
-
-        gameobjects = []
-
-        for gameobject in self.populated_room:
-            gameobjects.append(gameobject)
-
-        self.assertEqual(3, len(gameobjects))
-        self.assertEqual(self.goa, gameobjects[0])
-        self.assertEqual(self.gob, gameobjects[1])
-        self.assertEqual(self.goc, gameobjects[2])
 
 
 if __name__ == '__main__':

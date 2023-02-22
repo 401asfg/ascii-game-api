@@ -16,6 +16,7 @@ class Room(Game):
         
         :param gameobjects: A set of game objects that are spawned into the room
         upon its creation
+        :raise DuplicateGameObjectError: If not every gameobject instance in the given gameobjects is unique
         """
         self._gameobjects = []
         [self.spawn(gameobject) for gameobject in gameobjects]
@@ -25,11 +26,11 @@ class Room(Game):
             raise DuplicateGameObjectError
 
         self._gameobjects.append(gameobject)
-        gameobject.on_spawn()
+        gameobject.on_spawn()   # TODO: move to game and test?
 
     def despawn(self, gameobject: GameObject):
         self._gameobjects.remove(gameobject)
-        gameobject.on_despawn()
+        gameobject.on_despawn() # TODO: move to game and test?
 
     def get_gameobject(self, index: int) -> GameObject:
         return self._gameobjects[index]
@@ -39,15 +40,3 @@ class Room(Game):
 
     def __contains__(self, gameobject: GameObject) -> bool:
         return gameobject in self._gameobjects
-
-    def __iter__(self):
-        self._index = 0
-        return self
-    
-    def __next__(self) -> GameObject:
-        if self._index >= self.num_gameobjects():
-            raise StopIteration
-
-        gameobject = self.get_gameobject(self._index)
-        self._index += 1
-        return gameobject

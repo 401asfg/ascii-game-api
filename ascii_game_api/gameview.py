@@ -1,9 +1,8 @@
-from ascii_renderer import Renderable, Screen
+from ascii_renderer import Renderable, Screen, Sprite
 
 from ascii_game_api.game import Game
 
 
-# TODO: account for game objects' depth property
 # TODO: test
 
 
@@ -44,15 +43,19 @@ class GameView(Renderable):
         and y to y + hud.height - 1 rows of the given game drawn under it; 
         The empty space sprites of the hud don't hide the sprites of the game
         """
-        self._draw_game()
+        self._draw_game_to_game_screen()
         self.hud.overlay(self._game_screen)
         return self._game_screen.render()
 
-    def _draw_game(self):
+    def _draw_game_to_game_screen(self):
         """
-        Clears the game_screen and draws the x to x + game_screen.width - 1 columns and y to 
-        y + game_screen.height - 1 rows of the game onto the game_screen
+        Clears the game_screen and draws the x to x + game_screen.width - 1 columns and y to y + game_screen.height - 1
+        rows of the game onto the game_screen; if two game objects have the same x and y values, draws the one with the
+        larger depth; if both gameobjects also have the same depth, draws the one with the larger index
         """
+        sprite_buffer_depth_value_index = 1
+        sprite_buffer: dict[tuple[int, int], tuple[Sprite, int]] = {}
+
         self._game_screen.clear()
 
         def in_view(gameobject):
@@ -61,19 +64,32 @@ class GameView(Renderable):
 
             left = self.x
             top = self.y
+
             right = left + self._game_screen.width
             bottom = top + self._game_screen.height
 
             return left <= x < right and top <= y < bottom
 
-        def draw(gameobject):
-            self._game_screen.draw(gameobject.sprite,
-                                   gameobject.x,
-                                   gameobject.y)
+        def update_sprite_buffer_item(gameobject):
+            coordinates = (gameobject.x, gameobject.y)
+            sprite = gameobject.sprite
+            depth = gameobject.depth
 
-        [draw(gameobject)
-         for gameobject in self.game
-         if in_view(gameobject)]
+            if coordinates not in sprite_buffer.keys() \
+               or sprite_buffer[coordinates][sprite_buffer_depth_value_index] >= depth:
+                sprite_buffer[coordinates] = (sprite, depth)
+
+        def build_sprite_buffer_from_game():
+            [update_sprite_buffer_item(gameobject)
+             for gameobject in self.game
+             if in_view(gameobject)]
+
+        def draw_sprite_buffer_to_game_screen():
+            [self._game_screen.draw(sprite, x, y)
+             for (x, y), (sprite, _) in sprite_buffer.items()]
+
+        build_sprite_buffer_from_game()
+        draw_sprite_buffer_to_game_screen()
 
     @property
     def game(self) -> Game:
