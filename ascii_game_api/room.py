@@ -13,7 +13,7 @@ class Room(Game):
     def __init__(self, gameobjects: Tuple[GameObject, ...] = ()):
         """
         Initializes the class
-        
+
         :param gameobjects: A set of game objects that are spawned into the room
         upon its creation
         :raise DuplicateGameObjectError: If not every gameobject instance in the given gameobjects is unique
@@ -30,13 +30,31 @@ class Room(Game):
 
     def despawn(self, gameobject: GameObject):
         self._gameobjects.remove(gameobject)
-        gameobject.on_despawn() # TODO: move to game and test?
+        gameobject.on_despawn()  # TODO: move to game and test?
 
     def get_gameobject(self, index: int) -> GameObject:
         return self._gameobjects[index]
+
+    # TODO: test
+    def get_gameobjects(self, x: int, y: int) -> Tuple[GameObject, ...]:
+        return tuple([gameobject
+                      for gameobject in self
+                      if gameobject.x == x and gameobject.y == y])
 
     def num_gameobjects(self) -> int:
         return len(self._gameobjects)
 
     def __contains__(self, gameobject: GameObject) -> bool:
         return gameobject in self._gameobjects
+
+    # TODO: test
+    def check_collision(self, x: int, y: int):
+        gameobjects = self.get_gameobjects(x, y)
+        solids = [gameobject
+                  for gameobject in gameobjects
+                  if gameobject.is_solid]
+
+        if len(solids) < 2:
+            return
+
+        [solid.on_collision() for solid in solids]

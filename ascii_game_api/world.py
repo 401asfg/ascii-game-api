@@ -1,3 +1,4 @@
+from typing import Tuple
 from ascii_game_api.game import Game, DuplicateGameObjectError
 from ascii_game_api.gameobject import GameObject
 from ascii_game_api.room import Room
@@ -14,7 +15,7 @@ class World(Game):
     def __init__(self, room: Room, persistent_gameobjects: tuple[GameObject, ...] = ()):
         """
         Initializes the class
-        
+
         :param room: The room that the world starts at
         :param persistent_gameobjects: The persistent game objects that the world starts with; persistent game objects
         occupy the world's lowest indices
@@ -51,7 +52,8 @@ class World(Game):
             self._room.despawn(gameobject)
         else:
             self._persistent_gameobjects.remove(gameobject)
-            gameobject.on_despawn() # TODO: change to a call to super if on_despawn is called by game
+            # TODO: change to a call to super if on_despawn is called by game
+            gameobject.on_despawn()
 
     def get_gameobject(self, index: int) -> GameObject:
         """
@@ -68,6 +70,12 @@ class World(Game):
             return self._persistent_gameobjects[index]
 
         return self._room.get_gameobject(index - num_persistent_gameobjects)
+
+    # TODO: test
+    def get_gameobjects(self, x: int, y: int) -> Tuple[GameObject, ...]:
+        persistent_gameobjects = tuple(self._persistent_gameobjects)
+        room_gameobjects = self._room.get_gameobjects(x, y)
+        return persistent_gameobjects + room_gameobjects
 
     def num_gameobjects(self) -> int:
         return self._room.num_gameobjects() + len(self._persistent_gameobjects)
@@ -88,3 +96,15 @@ class World(Game):
                 raise DuplicateGameObjectError
 
         self._room = room
+
+    # TODO: test
+    def check_collision(self, x: int, y: int):
+        gameobjects = self.get_gameobjects(x, y)
+        solids = [gameobject
+                  for gameobject in gameobjects
+                  if gameobject.is_solid]
+
+        if len(solids) < 2:
+            return
+
+        [solid.on_collision() for solid in solids]

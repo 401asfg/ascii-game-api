@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
+from ascii_game_api import Game
 
 from ascii_loader import Entity
 from ascii_renderer import Sprite
-
-from utils import Direction
 
 # TODO: add more events?
 # TODO: centralized event manager?
@@ -37,6 +36,21 @@ class GameObject(Entity, ABC):
         self._depth = depth
         self.is_solid = is_solid
 
+    # TODO: test
+    def move(self, x: int, y: int, game: Game):
+        """
+        Moves this game object to the given x, y coordinates; if this game object is solid, and the 
+        given x, y coordinates contains other solid game objects, the collision event of all solid game 
+        objects will be triggered
+
+        :param x: The x coordinate to move the game object to
+        :param y: The y coordinate to move the game object to
+        :param game: The environment of game objects that both includes and surrounds this game object
+        """
+        self._x = x
+        self._y = y
+        game.check_collision(self.x, self.y)
+
     @property
     def sprite(self) -> Sprite:
         return self._sprite
@@ -57,4 +71,13 @@ class GameObject(Entity, ABC):
         """
         Performs the game object's despawn event;
         This method should only ever be called by a game's despawn method
+        """
+
+    # TODO: called multiple times when 2 objects move into each other at the same time?
+    @abstractmethod
+    def on_collision(self):
+        """
+        Performs the game object's collision evnet;
+        This method should only ever be called when this game object is solid and moves into another 
+        solid game object or another solid game object moves into it
         """

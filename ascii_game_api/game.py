@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Tuple
 
 from ascii_game_api.gameobject import GameObject
 
@@ -6,7 +7,7 @@ from ascii_game_api.gameobject import GameObject
 # TODO: create save system
 # TODO: x and y values as keys?
 # TODO: rewrite code that iterates over a game that has a spatial requirement iterate over coordinates instead of every gameobject
-# TODO: commands and event triggers are called on the game; the game calls events on the gameobjects and gives them context for 
+# TODO: commands and event triggers are called on the game; the game calls events on the gameobjects and gives them context for
 #       the calls (even passing itself to them)
 
 
@@ -65,7 +66,13 @@ class Game(ABC):
         :raise IndexError: If the given index is less than 0, or greater than or equal to num_gameobjects()
         """
 
-    # TODO: implement and test get_gameobject_at(x, y)
+    @abstractmethod
+    def get_gameobjects(self, x: int, y: int) -> Tuple[GameObject, ...]:
+        """
+        :param x: The x coordinate to get the game objects from
+        :param y: The y coordinate to get the game objects from
+        :return: The game objects at the given x, y coordinate pair in this game
+        """
 
     @abstractmethod
     def num_gameobjects(self) -> int:
@@ -78,4 +85,14 @@ class Game(ABC):
         """
         :param gameobject: The game object to check the game for
         :return: True if the given game object is in the game; otherwise, False
+        """
+
+    @abstractmethod
+    def check_collision(self, x: int, y: int):
+        """
+        Triggers the collision events of all solid game objects at the given coordinates, if there is more 
+        than one solid game object there
+
+        :param x: The x coordinate to check for a collision at
+        :param y: The y coordinate to check for a collision at
         """
