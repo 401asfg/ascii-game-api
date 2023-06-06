@@ -6,6 +6,8 @@ from ascii_game_api.gameobject import GameObject
 # TODO: create save system
 # TODO: x and y values as keys?
 # TODO: rewrite code that iterates over a game that has a spatial requirement iterate over coordinates instead of every gameobject
+# TODO: commands and event triggers are called on the game; the game calls events on the gameobjects and gives them context for 
+#       the calls (even passing itself to them)
 
 
 class DuplicateGameObjectError(Exception):
@@ -62,6 +64,8 @@ class Game(ABC):
 
         :raise IndexError: If the given index is less than 0, or greater than or equal to num_gameobjects()
         """
+
+    # TODO: implement and test get_gameobject_at(x, y)
 
     @abstractmethod
     def num_gameobjects(self) -> int:
