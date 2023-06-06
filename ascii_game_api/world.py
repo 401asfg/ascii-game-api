@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import List, Tuple
 from ascii_game_api.game import Game, DuplicateGameObjectError
 from ascii_game_api.gameobject import GameObject
 from ascii_game_api.room import Room
@@ -10,9 +10,9 @@ class World(Game):
     """
 
     _room: Room
-    _persistent_gameobjects: list[GameObject]
+    _persistent_gameobjects: List[GameObject]
 
-    def __init__(self, room: Room, persistent_gameobjects: tuple[GameObject, ...] = ()):
+    def __init__(self, room: Room, persistent_gameobjects: Tuple[GameObject, ...] = ()):
         """
         Initializes the class
 
