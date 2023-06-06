@@ -26,11 +26,11 @@ class Room(Game):
             raise DuplicateGameObjectError
 
         self._gameobjects.append(gameobject)
-        gameobject.on_spawn()   # TODO: move to game and test?
+        gameobject.on_spawn()
 
     def despawn(self, gameobject: GameObject):
         self._gameobjects.remove(gameobject)
-        gameobject.on_despawn()  # TODO: move to game and test?
+        gameobject.on_despawn()
 
     def get_gameobject(self, index: int) -> GameObject:
         return self._gameobjects[index]

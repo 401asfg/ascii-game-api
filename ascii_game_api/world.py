@@ -45,14 +45,13 @@ class World(Game):
             self._room.spawn(gameobject)
         else:
             self._persistent_gameobjects.append(gameobject)
-            gameobject.on_spawn()   # TODO: change to a call to super if on_spawn is called by game
+            gameobject.on_spawn()
 
     def despawn(self, gameobject: GameObject):
         if gameobject in self._room:
             self._room.despawn(gameobject)
         else:
             self._persistent_gameobjects.remove(gameobject)
-            # TODO: change to a call to super if on_despawn is called by game
             gameobject.on_despawn()
 
     def get_gameobject(self, index: int) -> GameObject:

@@ -5,11 +5,6 @@ from ascii_loader import Entity
 from ascii_renderer import Sprite
 
 # TODO: add more events?
-# TODO: centralized event manager?
-# TODO: make event system in other project and import it?
-# TODO: add solid property and collisions?
-# TODO: setters for x and y that update this gameobject's location in the game
-# TODO: on_spawn and on_despawn each set the gameobject's game (need to account for scenario where gameobject is in multiple games)
 
 
 class GameObject(Entity, ABC):
@@ -59,6 +54,7 @@ class GameObject(Entity, ABC):
     def depth(self) -> int:
         return self._depth
 
+    # TODO: needs to be passed more context?
     @abstractmethod
     def on_spawn(self):
         """
@@ -66,6 +62,7 @@ class GameObject(Entity, ABC):
         This method should only ever be called by a game's spawn method
         """
 
+    # TODO: needs to be passed more context?
     @abstractmethod
     def on_despawn(self):
         """
@@ -74,6 +71,7 @@ class GameObject(Entity, ABC):
         """
 
     # TODO: called multiple times when 2 objects move into each other at the same time?
+    # TODO: needs to be passed more context?
     @abstractmethod
     def on_collision(self):
         """
@@ -81,3 +79,5 @@ class GameObject(Entity, ABC):
         This method should only ever be called when this game object is solid and moves into another 
         solid game object or another solid game object moves into it
         """
+
+    # TODO: add on_command event?
