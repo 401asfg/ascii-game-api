@@ -7,6 +7,7 @@ from ascii_game_api.gameobject import GameObject
 # TODO: create save system
 # TODO: x and y values as keys?
 # TODO: rewrite code that iterates over a game that has a spatial requirement iterate over coordinates instead of every gameobject
+# TODO: use generic type bound by game object?
 
 
 class DuplicateGameObjectError(Exception):

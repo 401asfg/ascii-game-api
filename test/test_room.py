@@ -401,7 +401,7 @@ class TestRoom(unittest.TestCase):
                     False,
                     False)
 
-    def test_get(self):
+    def test_get_gameobject(self):
         def assert_get(expected_entity: GameObject, index: int):
             self.assertEqual(expected_entity.__dict__, self.empty_room.get_gameobject(index).__dict__)
 
@@ -485,6 +485,32 @@ class TestRoom(unittest.TestCase):
         self.empty_room.despawn(self.goa)
         assert_fail(0)
 
+    def test_get_gameobjects(self):
+        def assert_pass(self, expected_gameobjects, room, x, y):
+            self.assertEqual(expected_gameobjects, room.get_gameobjects(x, y))
+        
+        def assert_pass_for_range(expected_gameobjects, room, min_x, max_x, min_y, max_y):
+            for x in range(min_x, max_x):
+                for y in range(min_y, max_y):
+                    assert_pass(expected_gameobjects, room, x, y)
+
+        assert_pass_for_range((), self.empty_room, -100, 100, -100, 100)
+
+        # XC = -9
+        # YC = -1
+
+        # XA = 0
+        # YA = 0
+
+        # XB = 4
+        # YB = 19
+
+        # XD = 97
+        # YD = 24
+
+        # TODO: check all locations for populated room, then add god and check again
+        # TODO: add an object that is at the same x, y, depth as another
+        # TODO: add an object that is at the same x, y as another, but at a different depth
 
 if __name__ == '__main__':
     unittest.main()
