@@ -51,6 +51,7 @@ class Room(Game):
         return gameobject in self._gameobjects
 
     # TODO: test
+    # FIXME: triggers collision event for all touching solids, instead of just the solids that started touching
     def check_collision(self, x: int, y: int):
         gameobjects = self.get_gameobjects(x, y)
         solids = [gameobject for gameobject in gameobjects if gameobject.is_solid]

@@ -71,6 +71,7 @@ class World(Game):
         return self._room.get_gameobject(index - num_persistent_gameobjects)
 
     # TODO: test
+    # FIXME: triggers collision event for all touching solids, instead of just the solids that started touching
     def get_gameobjects(self, x: int, y: int) -> Tuple[GameObject, ...]:
         persistent_gameobjects = tuple(self._persistent_gameobjects)
         room_gameobjects = self._room.get_gameobjects(x, y)
