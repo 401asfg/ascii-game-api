@@ -35,11 +35,14 @@ class Room(Game):
     def get_gameobject(self, index: int) -> GameObject:
         return self._gameobjects[index]
 
-    # TODO: test
     def get_gameobjects(self, x: int, y: int) -> Tuple[GameObject, ...]:
-        return tuple([gameobject
-                      for gameobject in self
-                      if gameobject.x == x and gameobject.y == y])
+        return tuple(
+            [
+                gameobject
+                for gameobject in self
+                if gameobject.x == x and gameobject.y == y
+            ]
+        )
 
     def num_gameobjects(self) -> int:
         return len(self._gameobjects)
@@ -50,9 +53,7 @@ class Room(Game):
     # TODO: test
     def check_collision(self, x: int, y: int):
         gameobjects = self.get_gameobjects(x, y)
-        solids = [gameobject
-                  for gameobject in gameobjects
-                  if gameobject.is_solid]
+        solids = [gameobject for gameobject in gameobjects if gameobject.is_solid]
 
         if len(solids) < 2:
             return
